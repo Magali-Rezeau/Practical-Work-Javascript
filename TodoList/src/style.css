@@ -62,3 +62,6 @@ li .todo {
 li .todo.done {
   background: #333;
 }
+li input {
+  flex: 1;
+}
