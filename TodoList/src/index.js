@@ -20,7 +20,6 @@ form.addEventListener('submit', (event) => {
   const value = input.value;
   input.value = "";
   addTodo(value);
-  displayTodo();
 });
 
 const displayTodo = () => {
@@ -35,14 +34,22 @@ const createTodoElement = (todo, index) => {
   const li = document.createElement('li');
   const deleteButton = document.createElement('button');
   deleteButton.innerHTML = "Supprimer";
+
+  deleteButton.addEventListener("click", event => {
+    event.stopPropagation();
+    deleteTodo(index);
+  });
+
   li.innerHTML = `
     <span class="todo${ todo.done ? " done" : ""}"></span>
     <p>${ todo.text }</p>
   `;
   li.appendChild(deleteButton);
-  deleteButton.addEventListener("click", event => {
-    deleteTodo(index);
+
+  li.addEventListener("click", event => {
+    toggleTodo(index);
   });
+  
   return li;
 };
 
@@ -54,10 +61,16 @@ const addTodo = (text) => {
       done: false
     }
   );
+  displayTodo();
 };
 
 const deleteTodo = (index) => {
   todos.splice(index, 1);
+  displayTodo();
+};
+
+const toggleTodo = (index) => {
+  todos[index].done = !todos[index].done;
   displayTodo();
 };
 
